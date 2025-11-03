@@ -57,7 +57,7 @@ exports.addMemory = async (req, res) => {
         
         let imageUrl = null;
         if (req.file) {
-            const result = await cloudinary.uploadImage(req.file.path, 'memories');
+            const result = await cloudinary.uploadImageFromBuffer(req.file.buffer, 'memories', req.file.mimetype);
             imageUrl = result.secure_url;
         }
         

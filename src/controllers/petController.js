@@ -84,8 +84,8 @@ exports.uploadPetPhoto = async (req, res) => {
             return res.status(400).json({ message: 'No file uploaded' });
         }
 
-        // Upload to Cloudinary
-        const result = await cloudinary.uploadImage(req.file.path, 'pets');
+        // Upload to Cloudinary from memory buffer (serverless-friendly)
+        const result = await cloudinary.uploadImageFromBuffer(req.file.buffer, 'pets', req.file.mimetype);
         
         pet.photoUrl = result.secure_url;
         await pet.save();

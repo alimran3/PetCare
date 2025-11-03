@@ -25,6 +25,17 @@ exports.uploadImage = async (filePath, folder) => {
     }
 };
 
+// Upload image directly from a memory buffer (for serverless environments)
+exports.uploadImageFromBuffer = async (buffer, folder, mimetype = 'image/jpeg') => {
+    const base64 = buffer.toString('base64');
+    const dataUri = `data:${mimetype};base64,${base64}`;
+    const result = await cloudinary.uploader.upload(dataUri, {
+        folder: `petzone/${folder}`,
+        resource_type: 'auto'
+    });
+    return result;
+};
+
 exports.deleteImage = async (publicId) => {
     try {
         const result = await cloudinary.uploader.destroy(publicId);
